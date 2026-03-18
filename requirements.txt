@@ -5,3 +5,4 @@ eventlet==0.35.2
 cryptography==42.0.8
 pycryptodome==3.20.0
 liboqs-python==0.14.1
+requests==2.32.3

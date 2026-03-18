@@ -4,7 +4,55 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PQ Messenger Chat</title>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="chat-page">
+  <main id="app-root" class="chat-layout" data-username="{{ username }}" data-token="{{ token }}">
+    <aside class="contacts-panel">
+      <div class="brand-block">
+        <h1>PQ Messenger</h1>
+        <p class="subtitle">Post-Quantum Secure</p>
+      </div>
+
+      <p class="signed-in">Signed in as <strong>{{ username }}</strong></p>
+
+      <div class="contact-list" role="listbox" aria-label="Contacts">
+        <button class="contact-item" data-user="alice" type="button">Alice</button>
+        <button class="contact-item" data-user="bob" type="button">Bob</button>
+      </div>
+    </aside>
+
+    <section class="messages-panel">
+      <header class="messages-header">
+        <p class="chatting-with">Chatting with <span id="current-partner">-</span></p>
+        <div class="status-wrap">
+          <span id="status-dot" class="status-dot" aria-hidden="true"></span>
+          <p id="connection-status">Connecting...</p>
+        </div>
+      </header>
+
+      <div id="messages" class="messages" aria-live="polite"></div>
+    </section>
+
+    <section class="composer-panel">
+      <input id="message-input" type="text" placeholder="Type a secure message" disabled>
+      <button id="send-btn" type="button" disabled>Send</button>
+    </section>
+
+    <section class="terminal-panel" aria-live="polite">
+      <div class="terminal-header">
+        <h2>Crypto Terminal</h2>
+        <p id="encryption-badge" class="encryption-badge">🔒 AES-256-GCM</p>
+      </div>
+      <div id="terminal-log" class="terminal-log"></div>
+      <div class="terminal-cursor-row">
+        <span id="terminal-cursor" class="terminal-cursor" aria-hidden="true"></span>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+  <script src="/static/js/crypto_client.js"></script>
+  <script src="/static/js/chat.js"></script>
 </body>
 </html>
