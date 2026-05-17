@@ -3,7 +3,7 @@ configure_logging()
 
 import json
 from flask import Flask, request, jsonify, render_template, session
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 
 from auth.users  import (
     init_db, register_user, verify_password,
@@ -22,6 +22,7 @@ socketio  = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 # Maps username → socket_id. One active connection per user.
 _user_sockets: dict[str, str] = {}
 _socket_users: dict[str, str] = {}   # Reverse map: socket_id → username
+_hacker_mode_users: dict[str, bool] = {} # Hacker mode status per user
 
 signer = DilithiumSigner()
 
@@ -42,6 +43,10 @@ def index():
 @app.route("/chat")
 def chat():
     return render_template("chat.html")
+
+@app.route("/server")
+def server_intercept():
+    return render_template("server.html")
 
 @app.post("/api/register")
 def api_register():
@@ -101,13 +106,29 @@ def api_users_online():
 def on_connect():
     logger.info("Socket connected — sid=%s", request.sid)
 
+@socketio.on("join_intercept")
+def on_join_intercept():
+    join_room("server_intercept")
+    logger.info("Socket %s joined server_intercept room", request.sid)
+
 @socketio.on("disconnect")
 def on_disconnect():
     sid      = request.sid
     username = _socket_users.pop(sid, None)
     if username:
         _user_sockets.pop(username, None)
+        _hacker_mode_users.pop(username, None)
     logger.info("Socket disconnected — sid=%s, username=%s", sid, username)
+
+@socketio.on("toggle_tampering")
+def on_toggle_tampering(data):
+    token = data.get("token", "")
+    sender = _get_username(token)
+    if not sender:
+        return
+    enable = data.get("enable", False)
+    _hacker_mode_users[sender] = enable
+    logger.info("Hacker Mode toggled by %s to %s", sender, enable)
 
 @socketio.on("register_socket")
 def on_register_socket(data):
@@ -203,13 +224,30 @@ def on_handshake_init(data):
         emit("error", {"message": f"{target} is offline"})
         return
 
+    # Simulate MITM Tampering
+    signature_to_send = data["signature"]
+    if _hacker_mode_users.get(sender):
+        signature_to_send = signature_to_send[:-1] + ("0" if signature_to_send[-1] != "0" else "1")
+
     emit("handshake_request", {
         "from":                   sender,
         "kyber_ephemeral_pubkey": data["kyber_ephemeral_pubkey"],
         "ecdhe_ephemeral_pubkey": data["ecdhe_ephemeral_pubkey"],
         "timestamp":              data["timestamp"],
-        "signature":              data["signature"],
+        "signature":              signature_to_send,
     }, to=target_sid)
+
+    # Broadcast to Server Intercept View
+    socketio.emit("intercept_log", {
+        "type": "HANDSHAKE_INIT",
+        "data": {
+            "from": sender,
+            "to": target,
+            "kyber_ephemeral_pubkey": data["kyber_ephemeral_pubkey"][:32] + "...",
+            "ecdhe_ephemeral_pubkey": data["ecdhe_ephemeral_pubkey"][:32] + "...",
+            "signature": signature_to_send[:32] + "..."
+        }
+    }, to="server_intercept")
 
     logger.info("handshake_init forwarded — to=%s (sid=%s)", target, target_sid)
 
@@ -263,14 +301,32 @@ def on_handshake_response(data):
         emit("error", {"message": f"{target} is offline"})
         return
 
+    # Simulate MITM Tampering
+    signature_to_send = data["signature"]
+    if _hacker_mode_users.get(sender):
+        signature_to_send = signature_to_send[:-1] + ("0" if signature_to_send[-1] != "0" else "1")
+
     emit("handshake_complete", {
         "from":                   sender,
         "kyber_ephemeral_pubkey": data["kyber_ephemeral_pubkey"],
         "ecdhe_ephemeral_pubkey": data["ecdhe_ephemeral_pubkey"],
         "kyber_ciphertext":       data["kyber_ciphertext"],
         "timestamp":              data["timestamp"],
-        "signature":              data["signature"],
+        "signature":              signature_to_send,
     }, to=target_sid)
+
+    # Broadcast to Server Intercept View
+    socketio.emit("intercept_log", {
+        "type": "HANDSHAKE_RESPONSE",
+        "data": {
+            "from": sender,
+            "to": target,
+            "kyber_ephemeral_pubkey": data["kyber_ephemeral_pubkey"][:32] + "...",
+            "ecdhe_ephemeral_pubkey": data["ecdhe_ephemeral_pubkey"][:32] + "...",
+            "kyber_ciphertext": data["kyber_ciphertext"][:32] + "...",
+            "signature": signature_to_send[:32] + "..."
+        }
+    }, to="server_intercept")
 
     logger.info("handshake_response forwarded — to=%s", target)
 
@@ -309,6 +365,19 @@ def on_send_message(data):
         "tag":          data.get("tag", ""),
         "ratchet_step": data.get("ratchet_step", 0),
     }, to=target_sid)
+
+    # Broadcast to Server Intercept View
+    socketio.emit("intercept_log", {
+        "type": "ENCRYPTED_MESSAGE",
+        "data": {
+            "from": sender,
+            "to": target,
+            "nonce": data.get("nonce", ""),
+            "ciphertext_sample": data.get("ciphertext", "")[:32] + "...",
+            "tag": data.get("tag", ""),
+            "ratchet_step": data.get("ratchet_step", 0)
+        }
+    }, to="server_intercept")
 
 # ── Startup ───────────────────────────────────────────────────────────────────
 

@@ -258,3 +258,10 @@ function updateCryptoStats() {
     const session = crypto._sessions[activePeer];
     ratchetStepStat.textContent = session ? session.step : 0;
 }
+
+const hackerModeSwitch = document.getElementById("hackerModeSwitch");
+if (hackerModeSwitch) {
+    hackerModeSwitch.addEventListener("change", (e) => {
+        socket.emit("toggle_tampering", { token, enable: e.target.checked });
+    });
+}
