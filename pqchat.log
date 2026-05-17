@@ -446,3 +446,209 @@
 2026-05-17 20:58:44,719 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 20:58:44] "GET /api/users/online HTTP/1.1" 200 -
 2026-05-17 20:59:44,715 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 20:59:44] "GET /api/users/online HTTP/1.1" 200 -
 2026-05-17 20:59:44,717 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 20:59:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:05:11,139 [INFO] oqs.oqs — liboqs-python faulthandler is disabled
+2026-05-17 21:05:11,156 [INFO] auth.users — Database initialised — path=users.db
+2026-05-17 21:05:11,156 [INFO] __main__ — PQChat v2.0 starting on http://localhost:5000
+2026-05-17 21:05:48,008 [INFO] oqs.oqs — liboqs-python faulthandler is disabled
+2026-05-17 21:05:48,020 [INFO] auth.users — Database initialised — path=users.db
+2026-05-17 21:05:48,020 [INFO] __main__ — PQChat v2.0 starting on http://localhost:5000
+2026-05-17 21:05:48,034 [INFO] werkzeug — [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.25:5000
+2026-05-17 21:05:48,034 [INFO] werkzeug — [33mPress CTRL+C to quit[0m
+2026-05-17 21:05:48,034 [INFO] werkzeug —  * Restarting with stat
+2026-05-17 21:05:48,121 [INFO] oqs.oqs — liboqs-python faulthandler is disabled
+2026-05-17 21:05:48,133 [INFO] auth.users — Database initialised — path=users.db
+2026-05-17 21:05:48,133 [INFO] __main__ — PQChat v2.0 starting on http://localhost:5000
+2026-05-17 21:05:48,142 [WARNING] werkzeug —  * Debugger is active!
+2026-05-17 21:05:48,150 [INFO] werkzeug —  * Debugger PIN: 116-965-661
+2026-05-17 21:05:48,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:48] "GET /socket.io/?EIO=4&transport=polling&t=Pusb4hV HTTP/1.1" 200 -
+2026-05-17 21:05:48,718 [INFO] __main__ — Socket connected — sid=tHOYDAd1c-aEnGajAAAB
+2026-05-17 21:05:48,719 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:48] "POST /socket.io/?EIO=4&transport=polling&t=Pusb4hf&sid=_rEG-L8swDdb9CFMAAAA HTTP/1.1" 200 -
+2026-05-17 21:05:48,721 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:48] "GET /socket.io/?EIO=4&transport=polling&t=Pusb4hg&sid=_rEG-L8swDdb9CFMAAAA HTTP/1.1" 200 -
+2026-05-17 21:05:48,726 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:48] "GET /socket.io/?EIO=4&transport=polling&t=Pusb4hp&sid=_rEG-L8swDdb9CFMAAAA HTTP/1.1" 200 -
+2026-05-17 21:05:53,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:53] "GET /socket.io/?EIO=4&transport=polling&t=Pusb5ve HTTP/1.1" 200 -
+2026-05-17 21:05:53,716 [INFO] __main__ — Socket connected — sid=SWPIfPM_o30Q9kJqAAAD
+2026-05-17 21:05:53,716 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:53] "POST /socket.io/?EIO=4&transport=polling&t=Pusb5vl&sid=AiUGFVuQX4CrHHK2AAAC HTTP/1.1" 200 -
+2026-05-17 21:05:53,718 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:53] "GET /socket.io/?EIO=4&transport=polling&t=Pusb5vn&sid=AiUGFVuQX4CrHHK2AAAC HTTP/1.1" 200 -
+2026-05-17 21:05:53,722 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:05:53] "GET /socket.io/?EIO=4&transport=polling&t=Pusb5vu&sid=AiUGFVuQX4CrHHK2AAAC HTTP/1.1" 200 -
+2026-05-17 21:06:02,650 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:02] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:03,614 [INFO] __main__ — Socket disconnected — sid=tHOYDAd1c-aEnGajAAAB, username=None
+2026-05-17 21:06:03,614 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:03] "GET /socket.io/?EIO=4&transport=websocket&sid=_rEG-L8swDdb9CFMAAAA HTTP/1.1" 200 -
+2026-05-17 21:06:04,101 [INFO] __main__ — Socket disconnected — sid=SWPIfPM_o30Q9kJqAAAD, username=None
+2026-05-17 21:06:04,101 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:04] "GET /socket.io/?EIO=4&transport=websocket&sid=AiUGFVuQX4CrHHK2AAAC HTTP/1.1" 200 -
+2026-05-17 21:06:05,509 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:05] "GET / HTTP/1.1" 200 -
+2026-05-17 21:06:05,531 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:05] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-17 21:06:05,613 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:05] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-05-17 21:06:09,774 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:09] "GET / HTTP/1.1" 200 -
+2026-05-17 21:06:09,797 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-17 21:06:13,762 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "GET /server HTTP/1.1" 200 -
+2026-05-17 21:06:13,779 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-17 21:06:13,780 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "GET /static/js/server_view.js HTTP/1.1" 200 -
+2026-05-17 21:06:13,852 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "GET /socket.io/?EIO=4&transport=polling&t=PusbAqQ HTTP/1.1" 200 -
+2026-05-17 21:06:13,860 [INFO] __main__ — Socket connected — sid=bI2n_Rt01AGxFH8fAAAF
+2026-05-17 21:06:13,861 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "POST /socket.io/?EIO=4&transport=polling&t=PusbAqY&sid=wy4QIvceLdTPq3nYAAAE HTTP/1.1" 200 -
+2026-05-17 21:06:13,862 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "GET /socket.io/?EIO=4&transport=polling&t=PusbAqY.0&sid=wy4QIvceLdTPq3nYAAAE HTTP/1.1" 200 -
+2026-05-17 21:06:13,885 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "GET /socket.io/?EIO=4&transport=polling&t=PusbAqv&sid=wy4QIvceLdTPq3nYAAAE HTTP/1.1" 200 -
+2026-05-17 21:06:13,886 [INFO] __main__ — Socket bI2n_Rt01AGxFH8fAAAF joined server_intercept room
+2026-05-17 21:06:13,886 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:13] "POST /socket.io/?EIO=4&transport=polling&t=PusbAqv.0&sid=wy4QIvceLdTPq3nYAAAE HTTP/1.1" 200 -
+2026-05-17 21:06:22,793 [INFO] auth.users — Login successful: bob
+2026-05-17 21:06:22,795 [DEBUG] auth.tokens — Token generated for bob — expires_at=2026-05-18 15:36:22.794066+00:00
+2026-05-17 21:06:22,795 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:22] "POST /api/login HTTP/1.1" 200 -
+2026-05-17 21:06:22,827 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:22] "GET /chat HTTP/1.1" 200 -
+2026-05-17 21:06:22,858 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-17 21:06:22,859 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:22] "GET /static/js/ui.js HTTP/1.1" 200 -
+2026-05-17 21:06:22,885 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:22] "GET /static/js/crypto_client.js HTTP/1.1" 200 -
+2026-05-17 21:06:24,037 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:24] "GET /socket.io/?EIO=4&transport=polling&t=PusbDJZ HTTP/1.1" 200 -
+2026-05-17 21:06:24,062 [INFO] __main__ — Socket connected — sid=dSIhod_5UsmPBXwCAAAH
+2026-05-17 21:06:24,064 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:24] "GET /socket.io/?EIO=4&transport=polling&t=PusbDJs&sid=i7rCORzv-DT4udEHAAAG HTTP/1.1" 200 -
+2026-05-17 21:06:24,068 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:24] "POST /socket.io/?EIO=4&transport=polling&t=PusbDJr&sid=i7rCORzv-DT4udEHAAAG HTTP/1.1" 200 -
+2026-05-17 21:06:24,133 [INFO] __main__ — Socket registered — username=bob, sid=dSIhod_5UsmPBXwCAAAH
+2026-05-17 21:06:24,134 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:24,135 [DEBUG] auth.users — Public key registered for bob — dilithium_pubkey_len=1952 bytes, ecdh_pubkey_len=65 bytes
+2026-05-17 21:06:28,802 [INFO] auth.users — Login successful: alice
+2026-05-17 21:06:28,803 [DEBUG] auth.tokens — Token generated for alice — expires_at=2026-05-18 15:36:28.802682+00:00
+2026-05-17 21:06:28,804 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "POST /api/login HTTP/1.1" 200 -
+2026-05-17 21:06:28,825 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "GET /chat HTTP/1.1" 200 -
+2026-05-17 21:06:28,856 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-17 21:06:28,856 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "[36mGET /static/js/ui.js HTTP/1.1[0m" 304 -
+2026-05-17 21:06:28,865 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "[36mGET /static/js/crypto_client.js HTTP/1.1[0m" 304 -
+2026-05-17 21:06:28,918 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "GET /socket.io/?EIO=4&transport=polling&t=PusbEVq HTTP/1.1" 200 -
+2026-05-17 21:06:28,931 [INFO] __main__ — Socket connected — sid=IO7GKwBV6ADkMdptAAAJ
+2026-05-17 21:06:28,932 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "POST /socket.io/?EIO=4&transport=polling&t=PusbEW0&sid=SVbuR0cACJENcVdxAAAI HTTP/1.1" 200 -
+2026-05-17 21:06:28,937 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "GET /socket.io/?EIO=4&transport=polling&t=PusbEW1&sid=SVbuR0cACJENcVdxAAAI HTTP/1.1" 200 -
+2026-05-17 21:06:28,939 [INFO] __main__ — Socket registered — username=alice, sid=IO7GKwBV6ADkMdptAAAJ
+2026-05-17 21:06:28,941 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:28] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:28,941 [DEBUG] auth.users — Public key registered for alice — dilithium_pubkey_len=1952 bytes, ecdh_pubkey_len=65 bytes
+2026-05-17 21:06:29,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:32,136 [INFO] __main__ — Hacker Mode toggled by alice to True
+2026-05-17 21:06:32,870 [INFO] __main__ — Hacker Mode toggled by alice to False
+2026-05-17 21:06:33,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:33] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:34,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:34] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:35,055 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:35,125 [INFO] __main__ — handshake_init received — from=alice, target=bob
+2026-05-17 21:06:35,127 [DEBUG] crypto.dilithium — ML-DSA-65 signature verified: True
+2026-05-17 21:06:35,127 [INFO] __main__ — handshake_init forwarded — to=bob (sid=dSIhod_5UsmPBXwCAAAH)
+2026-05-17 21:06:35,132 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/keys/alice HTTP/1.1" 200 -
+2026-05-17 21:06:35,156 [INFO] __main__ — handshake_response received — from=bob, target=alice
+2026-05-17 21:06:35,157 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:35,157 [DEBUG] crypto.dilithium — ML-DSA-65 signature verified: True
+2026-05-17 21:06:35,158 [INFO] __main__ — handshake_response forwarded — to=alice
+2026-05-17 21:06:35,162 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/keys/bob HTTP/1.1" 200 -
+2026-05-17 21:06:35,176 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/keys/bob HTTP/1.1" 200 -
+2026-05-17 21:06:35,179 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:35] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:37,840 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:37] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:37,848 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:37] "GET /api/keys/alice HTTP/1.1" 200 -
+2026-05-17 21:06:37,861 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:37] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:39,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:39,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:44,711 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:44,715 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:48,962 [INFO] __main__ — send_message: relaying encrypted blob — from=bob, to=alice
+2026-05-17 21:06:49,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:49,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:53,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:53] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:54,140 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:54] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:58,291 [INFO] __main__ — send_message: relaying encrypted blob — from=alice, to=bob
+2026-05-17 21:06:58,946 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:58] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:06:59,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:06:59] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:02,327 [INFO] __main__ — send_message: relaying encrypted blob — from=bob, to=alice
+2026-05-17 21:07:03,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:03] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:04,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:04] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:07,355 [INFO] __main__ — send_message: relaying encrypted blob — from=alice, to=bob
+2026-05-17 21:07:08,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:08] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:09,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:09] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:11,287 [INFO] __main__ — send_message: relaying encrypted blob — from=bob, to=alice
+2026-05-17 21:07:13,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:13] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:14,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:14] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:14,932 [INFO] __main__ — send_message: relaying encrypted blob — from=bob, to=alice
+2026-05-17 21:07:19,711 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:19,713 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:24,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:24,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:29,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:29,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:33,603 [INFO] __main__ — Hacker Mode toggled by alice to True
+2026-05-17 21:07:33,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:33] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:34,138 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:34] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:38,946 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:38] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:39,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:41,114 [INFO] __main__ — send_message: relaying encrypted blob — from=alice, to=bob
+2026-05-17 21:07:43,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:43] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:44,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:46,256 [INFO] __main__ — Hacker Mode toggled by alice to False
+2026-05-17 21:07:46,787 [INFO] __main__ — Hacker Mode toggled by alice to True
+2026-05-17 21:07:48,942 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:48] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:49,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:53,943 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:53] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:54,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:54] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:59,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:59] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:07:59,711 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:07:59] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:04,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:04] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:04,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:04] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:09,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:09] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:09,713 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:09] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:14,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:14] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:14,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:14] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:19,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:19,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:24,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:24,711 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:29,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:29,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:34,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:34] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:34,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:34] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:39,706 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:39,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:44,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:44,712 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:49,709 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:49,711 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:54,708 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:54] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:08:54,710 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:08:54] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:09:44,715 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:09:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:09:44,717 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:09:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:10:44,713 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:10:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:10:44,718 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:10:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:44,719 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:44,722 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:58,244 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:58] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:58,249 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:58] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:58,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:58] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:11:59,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:11:59] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:03,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:03] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:04,135 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:04] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:08,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:08] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:09,135 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:09] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:13,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:13] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:14,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:14] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:18,950 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:18] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:19,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:23,946 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:23] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:24,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:24] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:28,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:28] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:29,138 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:29] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:33,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:33] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:34,138 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:34] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:38,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:38] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:39,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:39] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:43,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:43] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:44,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:44] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:48,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:48] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:49,138 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:49] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:53,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:53] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:54,135 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:54] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:58,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:58] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:12:59,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:12:59] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:03,944 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:03] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:04,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:04] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:08,948 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:08] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:09,135 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:09] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:13,943 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:13] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:14,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:14] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:18,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:18] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:19,136 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:19] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:22,553 [INFO] __main__ — Hacker Mode toggled by alice to False
+2026-05-17 21:13:23,945 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:23] "GET /api/users/online HTTP/1.1" 200 -
+2026-05-17 21:13:24,137 [INFO] werkzeug — 127.0.0.1 - - [17/May/2026 21:13:24] "GET /api/users/online HTTP/1.1" 200 -

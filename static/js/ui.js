@@ -1,4 +1,5 @@
 import { PQChatCrypto, bufToHex, hexToBuf } from "./crypto_client.js";
+import { runCryptoBenchmark } from "./benchmark.js";
 
 // DOM Elements
 const myUsernameEl = document.getElementById("myUsername");
@@ -263,5 +264,16 @@ const hackerModeSwitch = document.getElementById("hackerModeSwitch");
 if (hackerModeSwitch) {
     hackerModeSwitch.addEventListener("change", (e) => {
         socket.emit("toggle_tampering", { token, enable: e.target.checked });
+    });
+}
+
+const runBenchmarkBtn = document.getElementById("runBenchmarkBtn");
+if (runBenchmarkBtn) {
+    runBenchmarkBtn.addEventListener("click", async () => {
+        runBenchmarkBtn.disabled = true;
+        runBenchmarkBtn.textContent = "Running Benchmark...";
+        await runCryptoBenchmark(appendLog, 100);
+        runBenchmarkBtn.disabled = false;
+        runBenchmarkBtn.textContent = "⚡ RUN SPEED BENCHMARK";
     });
 }
