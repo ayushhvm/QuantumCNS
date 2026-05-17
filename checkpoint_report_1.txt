@@ -1,0 +1,26 @@
+╔══════════════════════════════════════════════════════════════╗
+║  CHECKPOINT REPORT — Phase: 1 (Crypto Foundation)
+╠══════════════════════════════════════════════════════════════╣
+║  Status: PASS
+║  Files created: 
+║    - pqchat-v2/config.py
+║    - pqchat-v2/crypto/__init__.py
+║    - pqchat-v2/crypto/kyber.py
+║    - pqchat-v2/crypto/dilithium.py
+║    - pqchat-v2/crypto/hkdf.py
+║    - pqchat-v2/crypto/ratchet.py
+║    - pqchat-v2/tests/__init__.py
+║    - pqchat-v2/tests/test_crypto.py
+║  Libraries used + exact versions:
+║    - liboqs-python==0.15.0
+║    - cryptography==42.0.8
+║    - pytest==8.3.2
+║  Tests run: tests/test_crypto.py (26 tests)
+║  Test results: 26 passed, 0 failed
+║  Assumptions made: 
+║    - Tests ran within the project virtual environment.
+║  Known limitations:
+║    - The ratchet implementation does not handle out-of-order messages.
+║  What needs human verification: 
+║    - N/A at this stage.
+╚══════════════════════════════════════════════════════════════╝

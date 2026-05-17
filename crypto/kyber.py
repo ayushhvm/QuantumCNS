@@ -1,80 +1,111 @@
-"""
-Kyber768 Key Encapsulation Mechanism (KEM) wrapper.
-
-Algorithm: Kyber768 (equivalent to ML-KEM-768, NIST FIPS 203)
-Library:   liboqs-python 0.14.1 / liboqs native 0.15.0
-Security:  NIST Level 3 — 128-bit post-quantum security
-
-Verified key/ciphertext sizes:
-  public key:  1184 bytes
-  secret key:  2400 bytes
-  ciphertext:  1088 bytes
-  shared secret: 32 bytes
-"""
-
 import oqs
+from config import get_logger, KEM_ALG
+from config import MLKEM768_PUBKEY_LEN, MLKEM768_SECKEY_LEN
+from config import MLKEM768_CIPHERTEXT_LEN, MLKEM768_SS_LEN
 
-# Exact algorithm name as returned by oqs.get_enabled_kem_mechanisms()
-# Verified present in liboqs 0.15.0. "Dilithium3" is NOT available — use ML-DSA-65.
-KYBER_ALG = "Kyber768"
+logger = get_logger(__name__)
 
 
 class KyberKEM:
     """
-    Kyber768 KEM.
-
-    Usage pattern — always use context managers inside liboqs:
-        encapsulate: create fresh KEM, call encap_secret()
-        decapsulate: create fresh KEM with secret_key kwarg, call decap_secret()
-
-    NOTE: liboqs requires fresh KEM objects per operation. Do NOT reuse instances.
+    Wrapper around ML-KEM-768 (FIPS 203).
+    All methods return raw bytes. No hex encoding at this layer.
     """
 
     def generate_keypair(self) -> tuple[bytes, bytes]:
         """
-        Generate a Kyber768 keypair.
-
-        Returns:
-            (public_key, secret_key) as bytes
-            public_key:  1184 bytes
-            secret_key:  2400 bytes
+        Generate a fresh ML-KEM-768 keypair.
+        Returns (public_key, secret_key) as bytes.
+        Raises RuntimeError if key sizes are unexpected.
         """
-        with oqs.KeyEncapsulation(KYBER_ALG) as kem:
+        with oqs.KeyEncapsulation(KEM_ALG) as kem:
             public_key = kem.generate_keypair()
             secret_key = kem.export_secret_key()
-        return bytes(public_key), bytes(secret_key)
+
+        if len(public_key) != MLKEM768_PUBKEY_LEN:
+            raise RuntimeError(
+                f"ML-KEM-768 pubkey size mismatch: "
+                f"expected {MLKEM768_PUBKEY_LEN}, got {len(public_key)}"
+            )
+        if len(secret_key) != MLKEM768_SECKEY_LEN:
+            raise RuntimeError(
+                f"ML-KEM-768 seckey size mismatch: "
+                f"expected {MLKEM768_SECKEY_LEN}, got {len(secret_key)}"
+            )
+
+        logger.debug(
+            "ML-KEM-768 keypair generated — "
+            "pubkey_len=%d, seckey_len=%d", len(public_key), len(secret_key)
+        )
+        return public_key, secret_key
 
     def encapsulate(self, public_key: bytes) -> tuple[bytes, bytes]:
         """
-        Encapsulate a shared secret to the given public key.
-
-        Args:
-            public_key: recipient's Kyber768 public key (1184 bytes)
-
-        Returns:
-            (ciphertext, shared_secret) as bytes
-            ciphertext:    1088 bytes
-            shared_secret:   32 bytes
+        Encapsulate a shared secret using the recipient's public key.
+        Returns (ciphertext, shared_secret) as bytes.
+        Raises ValueError if public_key length is wrong.
+        Raises RuntimeError if output sizes are unexpected.
         """
-        with oqs.KeyEncapsulation(KYBER_ALG) as kem:
-            ciphertext, shared_secret = kem.encap_secret(public_key)
-        return bytes(ciphertext), bytes(shared_secret)
+        if len(public_key) != MLKEM768_PUBKEY_LEN:
+            raise ValueError(
+                f"ML-KEM-768 encapsulate: invalid pubkey length "
+                f"{len(public_key)}, expected {MLKEM768_PUBKEY_LEN}"
+            )
+
+        try:
+            with oqs.KeyEncapsulation(KEM_ALG) as kem:
+                ciphertext, shared_secret = kem.encap_secret(public_key)
+        except Exception as exc:
+            logger.error("ML-KEM-768 encapsulation failed: %s", exc)
+            raise RuntimeError(f"ML-KEM-768 encapsulation failed: {exc}") from exc
+
+        if len(ciphertext) != MLKEM768_CIPHERTEXT_LEN:
+            raise RuntimeError(
+                f"ML-KEM-768 ciphertext size mismatch: "
+                f"expected {MLKEM768_CIPHERTEXT_LEN}, got {len(ciphertext)}"
+            )
+        if len(shared_secret) != MLKEM768_SS_LEN:
+            raise RuntimeError(
+                f"ML-KEM-768 shared secret size mismatch: "
+                f"expected {MLKEM768_SS_LEN}, got {len(shared_secret)}"
+            )
+
+        logger.debug(
+            "ML-KEM-768 encapsulation complete — "
+            "ciphertext_len=%d, ss_len=%d", len(ciphertext), len(shared_secret)
+        )
+        return ciphertext, shared_secret
 
     def decapsulate(self, secret_key: bytes, ciphertext: bytes) -> bytes:
         """
-        Decapsulate a ciphertext using the secret key.
-
-        Args:
-            secret_key: Kyber768 secret key (2400 bytes)
-            ciphertext: encapsulated ciphertext (1088 bytes)
-
-        Returns:
-            shared_secret (32 bytes) — must equal the encapsulator's shared_secret
-
-        Raises:
-            RuntimeError: if liboqs decapsulation fails (malformed ciphertext)
+        Decapsulate to recover the shared secret.
+        Returns shared_secret as bytes.
+        Raises ValueError if input lengths are wrong.
+        Raises RuntimeError if output size is unexpected.
         """
-        # Verified: secret_key kwarg works in liboqs-python 0.14.1 with native 0.15.0
-        with oqs.KeyEncapsulation(KYBER_ALG, secret_key=secret_key) as kem:
-            shared_secret = kem.decap_secret(ciphertext)
-        return bytes(shared_secret)
+        if len(secret_key) != MLKEM768_SECKEY_LEN:
+            raise ValueError(
+                f"ML-KEM-768 decapsulate: invalid seckey length "
+                f"{len(secret_key)}, expected {MLKEM768_SECKEY_LEN}"
+            )
+        if len(ciphertext) != MLKEM768_CIPHERTEXT_LEN:
+            raise ValueError(
+                f"ML-KEM-768 decapsulate: invalid ciphertext length "
+                f"{len(ciphertext)}, expected {MLKEM768_CIPHERTEXT_LEN}"
+            )
+
+        try:
+            with oqs.KeyEncapsulation(KEM_ALG, secret_key=secret_key) as kem:
+                shared_secret = kem.decap_secret(ciphertext)
+        except Exception as exc:
+            logger.error("ML-KEM-768 decapsulation failed: %s", exc)
+            raise RuntimeError(f"ML-KEM-768 decapsulation failed: {exc}") from exc
+
+        if len(shared_secret) != MLKEM768_SS_LEN:
+            raise RuntimeError(
+                f"ML-KEM-768 decapsulated secret size mismatch: "
+                f"expected {MLKEM768_SS_LEN}, got {len(shared_secret)}"
+            )
+
+        logger.debug("ML-KEM-768 decapsulation complete — ss_len=%d", len(shared_secret))
+        return shared_secret

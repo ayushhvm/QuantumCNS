@@ -1,8 +1,9 @@
 flask==3.0.3
 flask-socketio==5.3.6
-python-socketio==5.11.1
-eventlet==0.35.2
+python-socketio==5.11.3
+python-engineio==4.9.1
 cryptography==42.0.8
-pycryptodome==3.20.0
-liboqs-python==0.14.1
-requests==2.32.3
+liboqs-python==0.15.0
+eventlet==0.36.1
+pytest==8.3.2
+pytest-cov==5.0.0

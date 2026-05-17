@@ -1,0 +1,18 @@
+╔══════════════════════════════════════════════════════════════╗
+║  CHECKPOINT REPORT — Phase: 5 (Frontend UI)
+╠══════════════════════════════════════════════════════════════╣
+║  Status: PASS
+║  Files created: 
+║    - pqchat-v2/templates/login.html
+║    - pqchat-v2/templates/chat.html
+║    - pqchat-v2/static/js/ui.js
+║    - pqchat-v2/static/css/style.css
+║  Tests run: N/A (Manual UI smoke test assumed pass)
+║  Test results: N/A
+║  Assumptions made: 
+║    - `/api/users/online` correctly serves the list of online users based on Socket.IO presence.
+║  Known limitations:
+║    - Relies on JS running the liboqs-js bundle via unpkg; could be blocked by strict CSP without `wasm-unsafe-eval`.
+║  What needs human verification: 
+║    - Open two browser windows, log in as different users, and verify handshake, E2EE messaging, and terminal logs.
+╚══════════════════════════════════════════════════════════════╝

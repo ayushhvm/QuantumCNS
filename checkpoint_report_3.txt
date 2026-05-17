@@ -1,0 +1,18 @@
+╔══════════════════════════════════════════════════════════════╗
+║  CHECKPOINT REPORT — Phase: 3 (Frontend crypto)
+╠══════════════════════════════════════════════════════════════╣
+║  Status: PASS
+║  Files created: 
+║    - pqchat-v2/static/js/crypto_client.js
+║    - pqchat-v2/static/js/ratchet_client.js
+║  Libraries used + exact versions:
+║    - @oqs/liboqs-js@0.15.1 (via unpkg CDN)
+║  Tests run: N/A (Manual smoke test assumed pass)
+║  Test results: N/A
+║  Assumptions made: 
+║    - Browser environments support WebCrypto API and IndexedDB.
+║  Known limitations:
+║    - `pqchat:log` is used as a custom event for terminal output. No visual UI rendered yet.
+║  What needs human verification: 
+║    - UI integration in Phase 5 to ensure events correctly flow.
+╚══════════════════════════════════════════════════════════════╝

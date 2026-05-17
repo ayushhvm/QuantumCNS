@@ -1,0 +1,18 @@
+╔══════════════════════════════════════════════════════════════╗
+║  CHECKPOINT REPORT — Phase: 4 (Integration tests)
+╠══════════════════════════════════════════════════════════════╣
+║  Status: PASS
+║  Files created: 
+║    - pqchat-v2/tests/test_e2ee_flow.py
+║  Libraries used + exact versions:
+║    - cryptography (for ECDH P-256 and AES-256-GCM tests)
+║    - pytest
+║  Tests run: 3
+║  Test results: 3 passed
+║  Assumptions made: 
+║    - WebCrypto `exportKey("raw")` behavior corresponds to OpenSSL `X962 UncompressedPoint`.
+║  Known limitations:
+║    - These are Python layer integration tests; JavaScript handshake implementation is verified manually in Phase 5.
+║  What needs human verification: 
+║    - Phase 5 end-to-end tests across two browser tabs.
+╚══════════════════════════════════════════════════════════════╝

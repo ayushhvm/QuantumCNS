@@ -1,125 +1,92 @@
-"""
-Symmetric ratchet implementation for PQChat v2.0.
-
-Implements the Symmetric-Key Ratchet from the Signal Double Ratchet spec.
-Reference: https://signal.org/docs/specifications/doubleratchet/
-
-State per conversation:
-  chain_key: 32 bytes — current position in the ratchet chain
-  step:       int     — message counter (for debugging/UI display)
-
-Forward Secrecy:
-  Each message_key is derived from chain_key and immediately discarded after use.
-  An attacker who compromises the current chain_key cannot derive past message_keys.
-
-DH Ratchet (NOT IMPLEMENTED — DOCUMENTED LIMITATION):
-  The full Double Ratchet adds a Diffie-Hellman ratchet layer every N messages.
-  This would provide "break-in recovery" (future messages safe even if current
-  state is compromised). It is NOT implemented here. Reason: proper DH ratchet
-  requires out-of-order message handling (skipped message keys must be stored),
-  which adds significant complexity beyond the scope of this demo.
-  See Signal spec §2.2 for the full construction.
-
-Amendment (3): Session Reset
-  reset() clears all ratchet state. The UI exposes a "Reset Session" button
-  that calls this, resolving ratchet desync from re-connections or dropped events.
-"""
-
+from dataclasses import dataclass, field
 from crypto.hkdf import derive_ratchet_keys
+from config import get_logger
+
+logger = get_logger(__name__)
 
 
-class SymmetricRatchet:
+@dataclass
+class RatchetState:
     """
-    Per-conversation symmetric ratchet state.
+    Holds the symmetric chain ratchet state for a single conversation.
 
-    Create one instance per active conversation. Store in a dict keyed by username.
+    chain_key: current 32-byte chain key
+    step:      number of messages sent or received so far (increments each message)
+
+    LIMITATION: this implementation does not handle out-of-order messages.
+    Messages must be decrypted in the exact order they were encrypted.
+    This is acceptable for a demo — document it in SECURITY_NOTES.md.
     """
-
-    def __init__(self, root_key: bytes):
-        """
-        Initialize the ratchet with a root key (the HKDF session key).
-
-        Args:
-            root_key: 32-byte session key derived from Kyber768+ECDHE HKDF
-        """
-        self.chain_key: bytes = root_key
-        self.step: int = 0
-
-    def advance(self) -> bytes:
-        """
-        Advance the ratchet by one step and return a one-time message key.
-
-        The returned message_key MUST be used for exactly one AES-GCM operation
-        and then discarded. The caller is responsible for not storing it.
-
-        Returns:
-            message_key: 32-byte one-time key for AES-256-GCM
-        """
-        new_chain_key, message_key = derive_ratchet_keys(self.chain_key)
-        self.chain_key = new_chain_key  # advance state
-        self.step += 1
-        # message_key is not stored in state — forward secrecy guaranteed
-        return message_key
-
-    def reset(self, new_root_key: bytes) -> None:
-        """
-        Reset ratchet state to a new root key.
-
-        Amendment (3): Called when the UI "Reset Session" button is clicked,
-        or when a new handshake is performed after a desync event.
-        After reset, both parties must re-run the handshake to establish
-        a new shared root_key before messaging can resume.
-
-        Args:
-            new_root_key: 32-byte key from a fresh handshake
-        """
-        self.chain_key = new_root_key
-        self.step = 0
-
-    @property
-    def state_summary(self) -> dict:
-        """Return a safe summary of ratchet state for the crypto terminal UI."""
-        return {
-            "step": self.step,
-            "chain_key_preview": self.chain_key.hex()[:16] + "...",
-            # Never expose full chain_key in logs
-        }
+    chain_key: bytes
+    step: int = 0
 
 
-class RatchetManager:
+class ChainRatchet:
     """
-    Manages per-conversation ratchet instances server-side.
+    Manages ratchet states for all active conversations.
 
-    On the server (blind relay), this is used to track ratchet step numbers
-    for routing sync. The server does NOT hold message keys — only step counts.
-
-    For the full client-side ratchet, see static/js/ratchet_client.js.
+    Each peer gets its own RatchetState. States are kept in memory only —
+    they are not persisted to disk or database.
     """
 
     def __init__(self):
-        self._ratchets: dict[str, SymmetricRatchet] = {}
+        self._states: dict[str, RatchetState] = {}
 
-    def initialize(self, conversation_id: str, root_key: bytes) -> SymmetricRatchet:
-        """Create or replace a ratchet for a conversation."""
-        ratchet = SymmetricRatchet(root_key)
-        self._ratchets[conversation_id] = ratchet
-        return ratchet
-
-    def get(self, conversation_id: str) -> SymmetricRatchet | None:
-        """Retrieve an existing ratchet. Returns None if not initialized."""
-        return self._ratchets.get(conversation_id)
-
-    def reset(self, conversation_id: str, new_root_key: bytes) -> SymmetricRatchet:
+    def init_from_session_key(self, peer: str, session_key: bytes) -> None:
         """
-        Reset ratchet for a conversation (Amendment 3 — session reset support).
-        Creates new ratchet if one doesn't exist yet.
+        Initialise a ratchet for a peer using the derived session key as root.
+        Must be called after handshake completes, before any messages are sent.
         """
-        if conversation_id in self._ratchets:
-            self._ratchets[conversation_id].reset(new_root_key)
-        else:
-            self._ratchets[conversation_id] = SymmetricRatchet(new_root_key)
-        return self._ratchets[conversation_id]
+        if len(session_key) != 32:
+            raise ValueError(f"session_key must be 32 bytes, got {len(session_key)}")
+        self._states[peer] = RatchetState(chain_key=session_key, step=0)
+        logger.info("Ratchet initialised for peer '%s' at step 0", peer)
 
-    def remove(self, conversation_id: str) -> None:
-        """Remove ratchet state when a user disconnects."""
-        self._ratchets.pop(conversation_id, None)
+    def encrypt_step(self, peer: str) -> tuple[bytes, int]:
+        """
+        Advance the ratchet and return (message_key, step_used).
+        The message_key must be used for AES-256-GCM encryption then discarded.
+        """
+        state = self._get_state(peer)
+        new_chain_key, message_key = derive_ratchet_keys(state.chain_key, state.step)
+        current_step = state.step
+        state.chain_key = new_chain_key
+        state.step += 1
+        logger.debug(
+            "Ratchet encrypt step %d for peer '%s'", current_step, peer
+        )
+        return message_key, current_step
+
+    def decrypt_step(self, peer: str, expected_step: int) -> bytes:
+        """
+        Advance the ratchet to the expected step and return the message_key.
+        The message_key must be used for AES-256-GCM decryption then discarded.
+
+        Raises ValueError if the expected_step does not match the current state.
+        This enforces in-order message delivery.
+        """
+        state = self._get_state(peer)
+        if state.step != expected_step:
+            raise ValueError(
+                f"Ratchet step mismatch for peer '{peer}': "
+                f"expected step {state.step}, received step {expected_step}. "
+                f"Out-of-order messages are not supported."
+            )
+        new_chain_key, message_key = derive_ratchet_keys(state.chain_key, state.step)
+        state.chain_key = new_chain_key
+        state.step += 1
+        logger.debug(
+            "Ratchet decrypt step %d for peer '%s'", expected_step, peer
+        )
+        return message_key
+
+    def _get_state(self, peer: str) -> RatchetState:
+        if peer not in self._states:
+            raise KeyError(
+                f"No ratchet state for peer '{peer}'. "
+                f"Call init_from_session_key() first."
+            )
+        return self._states[peer]
+
+    def has_state(self, peer: str) -> bool:
+        return peer in self._states

@@ -1,9 +1,0 @@
-# Pyrefly configuration — point to venv interpreter so IDE sees installed packages
-# Docs: https://github.com/facebook/pyrefly
-
-python_interpreter = "venv/bin/python"
-python_version = "3.13"
-
-# Treat these as third-party (not stdlib) so pyrefly looks in site-packages
-[infer]
-use_interpreter_site_packages = true

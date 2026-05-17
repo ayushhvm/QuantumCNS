@@ -1,0 +1,23 @@
+╔══════════════════════════════════════════════════════════════╗
+║  CHECKPOINT REPORT — Phase: 2 (Backend)
+╠══════════════════════════════════════════════════════════════╣
+║  Status: PASS
+║  Files created: 
+║    - pqchat-v2/auth/users.py
+║    - pqchat-v2/auth/tokens.py
+║    - pqchat-v2/app.py
+║    - pqchat-v2/tests/test_auth.py
+║  Libraries used + exact versions:
+║    - flask==3.0.3
+║    - flask-socketio==5.3.6
+║    - pytest==8.3.2
+║  Tests run: tests/test_auth.py (14 tests)
+║  Test results: 14 passed, 0 failed
+║  Assumptions made: 
+║    - DB tables are correctly isolated in tests using an in-memory or fresh file setup. 
+║      (Note: tests were adjusted to DROP TABLE on setup to ensure isolation.)
+║  Known limitations:
+║    - SQLite used as database, memory states not persistent across restarts.
+║  What needs human verification: 
+║    - N/A at this stage.
+╚══════════════════════════════════════════════════════════════╝
