@@ -48,3 +48,43 @@ def aes_gcm_decrypt(key: bytes, payload: dict) -> str:
     plaintext = cipher.decrypt_and_verify(ciphertext, tag)
     
     return plaintext.decode()
+
+
+# ── Bytes-native overloads (used by ratchet and test suite) ───────────────────
+
+def encrypt_bytes(key: bytes, plaintext: bytes) -> tuple[bytes, bytes, bytes]:
+    """
+    Encrypt bytes using AES-256-GCM.
+
+    Args:
+        key:       32-byte AES-256 key
+        plaintext: arbitrary bytes to encrypt
+
+    Returns:
+        (nonce, ciphertext, tag) — all bytes objects
+        nonce = 12 bytes, tag = 16 bytes
+    """
+    nonce = os.urandom(12)
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    ciphertext, tag = cipher.encrypt_and_digest(plaintext)
+    return nonce, ciphertext, tag
+
+
+def decrypt_bytes(key: bytes, nonce: bytes, ciphertext: bytes, tag: bytes) -> bytes:
+    """
+    Decrypt AES-256-GCM ciphertext and verify authentication tag.
+
+    Args:
+        key:        32-byte AES-256 key
+        nonce:      12-byte nonce used during encryption
+        ciphertext: encrypted bytes
+        tag:        16-byte authentication tag
+
+    Returns:
+        decrypted plaintext bytes
+
+    Raises:
+        ValueError: if authentication tag verification fails (ciphertext tampered)
+    """
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    return cipher.decrypt_and_verify(ciphertext, tag)

@@ -1,68 +1,219 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PQ Messenger</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PQChat v2.0 — Quantum-Secure Login</title>
+  <meta name="description" content="Post-quantum secure end-to-end encrypted messenger using Kyber768 and ML-DSA-65.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="login-page">
-  <main class="login-shell">
-    <section class="login-card" aria-labelledby="login-title">
-      <h1 id="login-title">PQ Messenger</h1>
-      <p class="subtitle">Post-Quantum Secure</p>
 
-      <label for="username">Username</label>
-      <input id="username" type="text" autocomplete="username" placeholder="alice or bob">
+  <div class="login-card">
 
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="current-password" placeholder="Enter password">
+    <!-- Logo -->
+    <div class="login-logo">
+      <span class="login-logo-title">🔐 PQChat v2.0</span>
+      <span class="login-logo-sub">Post-Quantum Secure Messaging</span>
+    </div>
 
-      <button id="login-btn" type="button" onclick="loginUser()">Log In Securely</button>
+    <!-- Algorithm badges -->
+    <div style="display:flex;gap:6px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;">
+      <span class="badge badge-cyan">KYBER768</span>
+      <span class="badge badge-green">ML-DSA-65</span>
+      <span class="badge badge-cyan">AES-256-GCM</span>
+      <span class="badge badge-green">E2EE</span>
+    </div>
 
-      <p id="login-error" class="login-error" hidden>Invalid username or password</p>
-      <p class="login-hint">Try alice/alice123 or bob/bob123</p>
-    </section>
-  </main>
+    <!-- Tabs -->
+    <div class="login-tabs">
+      <button class="login-tab active" id="tab-login" onclick="switchTab('login')">LOGIN</button>
+      <button class="login-tab" id="tab-register" onclick="switchTab('register')">REGISTER</button>
+    </div>
+
+    <!-- Login form -->
+    <form id="form-login" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label" for="login-username">Username</label>
+        <input
+          class="form-input"
+          id="login-username"
+          type="text"
+          placeholder="enter username"
+          autocomplete="username"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="login-password">Password</label>
+        <input
+          class="form-input"
+          id="login-password"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+      <button type="submit" class="btn-login" id="btn-login-submit">
+        <span id="login-btn-text">▶  AUTHENTICATE</span>
+      </button>
+      <div class="login-error" id="login-error"></div>
+    </form>
+
+    <!-- Register form -->
+    <form id="form-register" onsubmit="handleRegister(event)" style="display:none;">
+      <div class="form-group">
+        <label class="form-label" for="reg-username">Choose Username</label>
+        <input
+          class="form-input"
+          id="reg-username"
+          type="text"
+          placeholder="2–32 characters"
+          autocomplete="username"
+          required
+          minlength="2"
+          maxlength="32"
+        >
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-password">Choose Password</label>
+        <input
+          class="form-input"
+          id="reg-password"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          required
+          minlength="6"
+        >
+      </div>
+      <button type="submit" class="btn-login" id="btn-register-submit">
+        <span id="reg-btn-text">▶  CREATE ACCOUNT</span>
+      </button>
+      <div class="login-error" id="register-error"></div>
+    </form>
+
+    <!-- Info footer -->
+    <div class="login-info">
+      <div style="color:var(--cyan);margin-bottom:4px;font-weight:600;">🔬 CRYPTOGRAPHIC STACK</div>
+      KEM:  Kyber768 (NIST FIPS 203 / ML-KEM-768)<br>
+      SIG:  ML-DSA-65 (NIST FIPS 204 / Dilithium3)<br>
+      SYM:  AES-256-GCM · KDF: HKDF-SHA256<br>
+      <span style="color:var(--amber);">Keys generated in browser · Server is blind relay</span>
+    </div>
+
+  </div>
 
   <script>
-    async function loginUser() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      const error = document.getElementById('login-error');
-      const button = document.getElementById('login-btn');
+    // ── Tab switching ─────────────────────────────────────────
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('tab-login').classList.toggle('active', isLogin);
+      document.getElementById('tab-register').classList.toggle('active', !isLogin);
+      document.getElementById('form-login').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('form-register').style.display = isLogin ? 'none' : 'block';
+      clearErrors();
+    }
 
-      error.hidden = true;
-      button.disabled = true;
+    function clearErrors() {
+      ['login-error', 'register-error'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = ''; el.classList.remove('visible'); }
+      });
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.classList.add('visible'); }
+    }
+
+    function setLoading(btnId, textId, loading, label) {
+      const btn  = document.getElementById(btnId);
+      const span = document.getElementById(textId);
+      if (!btn || !span) return;
+      btn.disabled  = loading;
+      span.textContent = loading ? '■ AUTHENTICATING...' : label;
+    }
+
+    // ── Login ─────────────────────────────────────────────────
+    async function handleLogin(e) {
+      e.preventDefault();
+      clearErrors();
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value;
+      if (!username || !password) return;
+
+      setLoading('btn-login-submit', 'login-btn-text', true, '▶  AUTHENTICATE');
 
       try {
-        const response = await fetch('/login', {
-          method: 'POST',
+        const res = await fetch('/api/login', {
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }),
+          body:    JSON.stringify({ username, password }),
         });
+        const data = await res.json();
 
-        if (!response.ok) {
-          error.hidden = false;
+        if (!res.ok) {
+          showError('login-error', data.error || 'Authentication failed');
           return;
         }
 
-        const data = await response.json();
-        sessionStorage.setItem('pq_token', data.token);
-        sessionStorage.setItem('pq_username', data.username);
-        window.location.href = '/chat?token=' + encodeURIComponent(data.token);
-      } catch (_err) {
-        error.hidden = false;
+        // Store token and redirect to chat
+        sessionStorage.setItem('pqchat_token',    data.token);
+        sessionStorage.setItem('pqchat_username', data.username);
+        window.location.href = `/chat?token=${encodeURIComponent(data.token)}`;
+
+      } catch (err) {
+        showError('login-error', 'Network error. Is the server running?');
       } finally {
-        button.disabled = false;
+        setLoading('btn-login-submit', 'login-btn-text', false, '▶  AUTHENTICATE');
       }
     }
 
-    document.addEventListener('keydown', function onKeyDown(event) {
-      if (event.key === 'Enter') {
-        loginUser();
+    // ── Register ──────────────────────────────────────────────
+    async function handleRegister(e) {
+      e.preventDefault();
+      clearErrors();
+      const username = document.getElementById('reg-username').value.trim();
+      const password = document.getElementById('reg-password').value;
+
+      setLoading('btn-register-submit', 'reg-btn-text', true, '▶  CREATE ACCOUNT');
+
+      try {
+        const res = await fetch('/api/register', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError('register-error', data.error || 'Registration failed');
+          return;
+        }
+
+        // Auto-login after registration
+        switchTab('login');
+        document.getElementById('login-username').value = username;
+        document.getElementById('login-error').textContent =
+          '✅ Account created. Please log in.';
+        document.getElementById('login-error').style.color = 'var(--green)';
+        document.getElementById('login-error').classList.add('visible');
+
+      } catch (err) {
+        showError('register-error', 'Network error.');
+      } finally {
+        setLoading('btn-register-submit', 'reg-btn-text', false, '▶  CREATE ACCOUNT');
       }
-    });
+    }
+
+    // ── Auto-fill token if returning ─────────────────────────
+    const storedToken = sessionStorage.getItem('pqchat_token');
+    if (storedToken) {
+      fetch(`/api/keys/check?token=${storedToken}`).catch(() => {});
+    }
   </script>
 </body>
 </html>

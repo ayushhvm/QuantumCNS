@@ -1,58 +1,192 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PQ Messenger Chat</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PQChat v2.0 — Quantum-Secure Chat</title>
+  <meta name="description" content="End-to-end encrypted post-quantum secure messaging.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body class="chat-page">
-  <main id="app-root" class="chat-layout" data-username="{{ username }}" data-token="{{ token }}">
-    <aside class="contacts-panel">
-      <div class="brand-block">
-        <h1>PQ Messenger</h1>
-        <p class="subtitle">Post-Quantum Secure</p>
+<body>
+
+  <!-- Amendment 4: DEGRADED MODE banner (hidden until wasm fails) -->
+  <div id="degraded-banner" class="hidden">
+    <span class="badge-degraded">⚠ DEGRADED MODE</span>
+    liboqs-wasm unavailable — Post-quantum signatures disabled. ECDHE-only session.
+  </div>
+
+  <!-- Security alert (hidden by default) -->
+  <div id="security-alert" class="hidden"></div>
+
+  <div class="app-shell">
+
+    <!-- ── Top Bar ─────────────────────────────────────────── -->
+    <header class="topbar">
+      <div class="app-logo">
+        <span class="lock-icon">🔐</span>
+        PQChat<span style="color:var(--text-sec);font-weight:300"> v2.0</span>
       </div>
 
-      <p class="signed-in">Signed in as <strong>{{ username }}</strong></p>
-
-      <div class="contact-list" role="listbox" aria-label="Contacts">
-        <button class="contact-item" data-user="alice" type="button">Alice</button>
-        <button class="contact-item" data-user="bob" type="button">Bob</button>
+      <div class="ticker">
+        <span class="ticker-inner" id="status-ticker">
+          ■ Kyber768 · ML-DSA-65 · AES-256-GCM · HKDF-SHA256 · Symmetric Ratchet ·
+          NIST FIPS 203 · NIST FIPS 204 · E2EE Active ■
+        </span>
       </div>
-    </aside>
 
-    <section class="messages-panel">
-      <header class="messages-header">
-        <p class="chatting-with">Chatting with <span id="current-partner">-</span></p>
-        <div class="status-wrap">
-          <span id="status-dot" class="status-dot" aria-hidden="true"></span>
-          <p id="connection-status">Connecting...</p>
+      <div class="topbar-badges">
+        <span class="badge badge-cyan" id="pq-badge">QUANTUM-SAFE</span>
+        <span class="badge badge-green">E2EE</span>
+        <span class="badge badge-green" id="ratchet-badge">RATCHET</span>
+        <span class="status-badge status-pending" id="connection-status">CONNECTING</span>
+        <a href="/simulator?token={{ token }}" class="btn btn-ghost btn-sm" style="text-decoration:none;">
+          ⚛ SIMULATOR
+        </a>
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--cyan);">{{ username }}</span>
+      </div>
+    </header>
+
+    <!-- ── Three-Column Layout ─────────────────────────────── -->
+    <div class="chat-layout">
+
+      <!-- ── Panel 1: Contacts ───────────────────────────── -->
+      <aside class="contacts-panel">
+        <div class="panel-header">
+          <div class="panel-title">■ Online Users</div>
         </div>
-      </header>
+        <div id="user-list"></div>
+      </aside>
 
-      <div id="messages" class="messages" aria-live="polite"></div>
-    </section>
+      <!-- ── Panel 2: Chat ───────────────────────────────── -->
+      <main class="chat-panel">
+        <div class="chat-header">
+          <span style="color:var(--text-sec);font-family:var(--font-mono);font-size:11px;">TO:</span>
+          <span id="chat-peer-name" style="color:var(--text-dim);">— select a contact —</span>
+          <span class="status-badge status-pending hidden" id="session-status"></span>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <!-- Amendment 3: Session Reset button -->
+            <button
+              class="btn btn-red btn-sm"
+              id="btn-reset-session"
+              title="Reset session and re-handshake (fixes ratchet desync)"
+            >⟳ RESET SESSION</button>
+          </div>
+        </div>
 
-    <section class="composer-panel">
-      <input id="message-input" type="text" placeholder="Type a secure message" disabled>
-      <button id="send-btn" type="button" disabled>Send</button>
-    </section>
+        <!-- Message history -->
+        <div id="chat-messages">
+          <div style="text-align:center;margin:40px 0;color:var(--text-dim);font-family:var(--font-mono);font-size:12px;">
+            Select a contact to begin encrypted session
+          </div>
+        </div>
 
-    <section class="terminal-panel" aria-live="polite">
-      <div class="terminal-header">
-        <h2>Crypto Terminal</h2>
-        <p id="encryption-badge" class="encryption-badge">🔒 AES-256-GCM</p>
-      </div>
-      <div id="terminal-log" class="terminal-log"></div>
-      <div class="terminal-cursor-row">
-        <span id="terminal-cursor" class="terminal-cursor" aria-hidden="true"></span>
-      </div>
-    </section>
-  </main>
+        <!-- Input row -->
+        <div class="chat-input-row">
+          <input
+            id="message-input"
+            type="text"
+            placeholder="Type a message… (Enter to send)"
+            autocomplete="off"
+          >
+          <button class="btn btn-primary" id="btn-send" disabled>SEND ▶</button>
+        </div>
+      </main>
 
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+      <!-- ── Panel 3: Crypto Terminal ────────────────────── -->
+      <aside class="crypto-panel">
+
+        <!-- Algorithm info -->
+        <div class="crypto-section">
+          <div class="crypto-section-title">Algorithms</div>
+          <div class="alg-row"><span class="alg-label">KEM</span>     <span class="alg-value" id="algo-kem">Kyber768</span></div>
+          <div class="alg-row"><span class="alg-label">SIG</span>     <span class="alg-value" id="algo-sig">ML-DSA-65</span></div>
+          <div class="alg-row"><span class="alg-label">ECDHE</span>   <span class="alg-value" id="algo-ecdhe">P-256</span></div>
+          <div class="alg-row"><span class="alg-label">KDF</span>     <span class="alg-value green" id="algo-kdf">HKDF-SHA256</span></div>
+          <div class="alg-row"><span class="alg-label">SYM</span>     <span class="alg-value green" id="algo-sym">AES-256-GCM</span></div>
+          <div class="alg-row"><span class="alg-label">RATCHET</span> <span class="alg-value green" id="ratchet-algorithm">—</span></div>
+        </div>
+
+        <!-- Ratchet state -->
+        <div class="crypto-section">
+          <div class="crypto-section-title">Ratchet</div>
+          <div class="ratchet-step-display" id="ratchet-step">—</div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-sec);margin-bottom:4px;">MESSAGES ENCRYPTED</div>
+          <div class="chain-key" id="chain-key-preview" title="Chain key preview (first 8 bytes)">—</div>
+        </div>
+
+        <!-- Fingerprint -->
+        <div class="crypto-section">
+          <div class="crypto-section-title">Fingerprint</div>
+          <div id="fingerprint-display" class="hidden">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-sec);margin-bottom:4px;">
+              Safety number — compare out-of-band
+            </div>
+            <div id="fingerprint-value">—</div>
+            <div id="fingerprint-status" style="margin-top:6px;">Not verified</div>
+            <button class="btn btn-green btn-sm" id="btn-verify" style="margin-top:8px;width:100%;">
+              Mark as Verified
+            </button>
+          </div>
+          <div id="fingerprint-na" style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">
+            — establish session first —
+          </div>
+        </div>
+
+        <!-- Crypto log terminal -->
+        <div class="crypto-section" style="padding:10px 14px 6px;flex-shrink:0;">
+          <div class="crypto-section-title">Live Log</div>
+        </div>
+        <div id="crypto-log"></div>
+
+      </aside>
+    </div><!-- end .chat-layout -->
+
+  </div><!-- end .app-shell -->
+
+  <!-- ── Scripts ─────────────────────────────────────────────── -->
+  <!-- Socket.IO -->
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <!-- liboqs-wasm loader (Amendment 4: failure activates DEGRADED MODE) -->
+  <!-- If this fails, crypto_client.js handles DEGRADED MODE gracefully -->
+  <script>
+    (function() {
+      // Attempt to detect if liboqs-wasm is available
+      // In production, bundle liboqs.js locally in /static/wasm/
+      // For demo, check if OQS is globally available
+      window.OQS = window.OQS || null;
+    })();
+  </script>
+
+  <!-- PQChat JS modules (load order matters) -->
+  <script src="/static/js/ratchet_client.js"></script>
   <script src="/static/js/crypto_client.js"></script>
-  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/ui.js"></script>
+
+  <!-- Bootstrap the app with server-rendered username + token -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const username = '{{ username }}';
+      const token    = '{{ token }}';
+
+      if (!username || !token) {
+        window.location.href = '/login';
+        return;
+      }
+
+      // Show fingerprint panel only when session established
+      window.addEventListener('pqchat:session_ready', () => {
+        const fp = document.getElementById('fingerprint-na');
+        if (fp) fp.style.display = 'none';
+        const fpDisp = document.getElementById('fingerprint-display');
+        if (fpDisp) fpDisp.classList.remove('hidden');
+      });
+
+      // Initialise the full UI + socket + crypto client
+      PQChatUI.init(username, token);
+    });
+  </script>
+
 </body>
 </html>
